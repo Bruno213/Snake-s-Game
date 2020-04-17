@@ -1,0 +1,14 @@
+
+body {
+  height: 600px;
+  background-color: rgb(23, 160, 57);
+}
+
+#stage {
+  position: absolute;
+  top: 150px;
+  left: 30%;
+
+  border: 25px solid rgb(19, 48, 180);
+  background-color: #000;
+}
