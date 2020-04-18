@@ -6,6 +6,7 @@ window.onload = function() {
   const $qtdBox = 20;
   const $fullArea = $box * $qtdBox;
 
+  // criação da Home do jogo:
   $ctx.font = "78px serif"; 
   $ctx.fillStyle = "#228B22";
   $ctx.fillText("The", 6 *$box, 8 *$box);
@@ -14,6 +15,7 @@ window.onload = function() {
   $ctx.font = "23px serif";
   $ctx.fillStyle = "#FDFD00";
   $ctx.fillText("Start the game pressing SPACE", 4 *$box, 15 *$box);
+  /* < -------------- | -------------- > */
 
   const $vel = 1;
   let $snake = [];
@@ -21,6 +23,7 @@ window.onload = function() {
   let $HeadPY;
   let $direction;
   let $snakeEatApple = false;
+  let $pointCount = 0;
   let applePos = {
     randomPX: "",
     randomPY: ""
@@ -29,6 +32,7 @@ window.onload = function() {
   let jogoAtivo = false;
   let gameRun;
 
+  // funcão que inicia o game
   function gameStart(e) {
     if(e.keyCode === 32 && jogoAtivo === false) {
       
@@ -51,7 +55,7 @@ window.onload = function() {
   }
   document.addEventListener("keyup", gameStart);
 
-
+  // função que finaliza o game;
    function gameStop() {
     clearInterval(gameRun);
 
@@ -68,15 +72,15 @@ window.onload = function() {
     }, 300);
 
     jogoAtivo = false;
+    $pointCount = 0;
+    showScore();
   } 
-
-
-
+  // função responsavel por atualizar o jogo em tempo real:
   function gameRunning() {
+    updateDirection();
     let px = $snake[0].px;
     let py = $snake[0].py;
-
-    updateDirection();
+    
     drawSnake();
 
     if( px !== $HeadPX || py !== $HeadPY ) {
@@ -84,7 +88,6 @@ window.onload = function() {
       if(result) return gameStop();
       $snake.unshift({ px: $HeadPX, py: $HeadPY });
     }
-
     if($snakeEatApple !== true) {
       let snakeTail = $snake.pop();
       clearBox( snakeTail.px, snakeTail.py);        
@@ -93,58 +96,76 @@ window.onload = function() {
   }
   /* < -------------- | -------------- > */
 
-
-  /***********************************************************************
-   * Funcões primitivas do jogo, usadas para pintar e limpar os quadrados* 
-   ***********************************************************************/
+  // pinta o quadrado na posição especificada: 
   function drawBox(px, py) {
-    return $ctx.fillRect( px * $box, py * $box, $box, $box );
+    return $ctx.fillRect( px * $box, py * $box, $box, $box);
   }
 
+  // limpa o quadrado na posição especificada:
   function clearBox(px, py) {
     return $ctx.clearRect(px *$box , py *$box , $box, $box);
   }
-  /* < -------------- | -------------- > */
 
-  /****************************************************************
-   * Funcões responsaveis por gerar a maçã e atualizar sua posição* 
-   ****************************************************************/
-
+  // Função que desenha a cobra: 
    function drawSnake() {
     $snake.map((item)=> {
       $ctx.fillStyle = "#BBB";
-      updateApplePos(item.px, item.py);
-      return drawBox( item.px, item.py );
+      if(item.px === -1) {
+        item.px += 21;
+        $HeadPX = $snake[0].px -$vel;
+
+      } else if(item.px === 21) {
+        item.px -= 21;
+        $HeadPX = $snake[0].px +$vel;
+
+      } else if(item.py === -1) {
+        item.py += 21;
+        $HeadPY = $snake[0].py -$vel;
+
+      } else if(item.py === 21) {
+        item.py -= 21;
+        $HeadPY = $snake[0].py +$vel;
+      }
+        updateApplePos(item.px, item.py);
+        return drawBox( item.px, item.py);
     });
+
    }
 
-  /****************************************************************
-   * Funcões responsaveis por gerar a maçã e atualizar sua posição* 
-   ****************************************************************/
+
+   // desenha a maçã:
   function drawApple() {
     $ctx.fillStyle = "#FF0000";
     let randomPX = Math.round(Math.random() * ($qtdBox -1));
     let randomPY = Math.round(Math.random() * ($qtdBox -1));
     applePos.randomPX = randomPX;
     applePos.randomPY = randomPY;
-
     return drawBox(randomPX, randomPY);
   } 
 
+  // atualiza posição da maçã:
   function updateApplePos(px , py) {
     if(px === applePos.randomPX && py === applePos.randomPY ) {
       drawApple();
+      $pointCount += 1;
+      showScore();
       $ctx.fillStyle = "#BBB";
       $ctx.fillRect(px *$box, py *$box, $box, $box);
       return $snakeEatApple = true;
     } 
   }
-  /* < -------------- | -------------- > */
 
-  /**************************************************
-   * Funcões responsáveis pelas ações dentro do jogo* 
-   **************************************************/
-  
+  // exibe a quantidade de pontos(maçãs que o usuario comeu) na tela.
+  function showScore() {
+    const score = document.querySelector("#score");
+    let text = `SCORE: ${$pointCount}`;
+
+    score.innerText = text;
+  }
+
+/* < -------------- | -------------- > */
+
+  // atualiza a direção da cobra:
   function updateDirection() {
     switch($direction) {
       case "LEFT": 
@@ -161,7 +182,7 @@ window.onload = function() {
           break;  
     } 
   }
-
+  // altera a direção de acordo com o clique do usuário:
   function newDirection(e) {
     let $newKey = e.keyCode;
     if($newKey === 37 && $HeadPX - $vel !== $snake[1].px ) $direction = "LEFT"; 
@@ -169,7 +190,5 @@ window.onload = function() {
     if($newKey === 39 && $HeadPX + $vel !== $snake[1].px ) $direction = "RIGHT";
     if($newKey === 40 && $HeadPY + $vel !== $snake[1].py ) $direction = "DOWN";
   }
-
    document.addEventListener("keydown", newDirection); 
-  /* < -------------- | -------------- > */
 }

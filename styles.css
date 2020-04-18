@@ -1,14 +1,29 @@
 
-body {
-  height: 600px;
+.main {
+  width: 100vw;
+  height: 100vh;
   background-color: rgb(23, 160, 57);
 }
 
-#stage {
-  position: absolute;
-  top: 150px;
-  left: 30%;
+.container {
+  width: 600px;
+  height: 100vh;
+  margin: 0 auto;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.score {
+  color: #000;
+  font-size: 25px;
+
+  margin: 0 12px;
+}
+
+#stage {
   border: 25px solid rgb(19, 48, 180);
   background-color: #000;
+  margin-right: 50px;
 }
