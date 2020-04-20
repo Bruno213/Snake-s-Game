@@ -1,20 +1,33 @@
 window.onload = function() {
   const Canvas = document.querySelector("#stage");
   const $ctx = Canvas.getContext("2d");
+
+  const {width} = screen;
+
+  if(width > 700) {
+    Canvas.setAttribute("width", "500");
+    Canvas.setAttribute("height", "500");
+  } else if (width <= 700 && width >= 500) {
+    Canvas.setAttribute("width", "400");
+    Canvas.setAttribute("height", "400");
+  } else {
+    Canvas.setAttribute("width", "300");
+    Canvas.setAttribute("height", "300");
+  }
   
-  const $box = 25;
   const $qtdBox = 20;
+  const $box = Canvas.width / $qtdBox;
   const $fullArea = $box * $qtdBox;
 
-  // criação da Home do jogo:
-  $ctx.font = "78px serif"; 
-  $ctx.fillStyle = "#228B22";
-  $ctx.fillText("The", 6 *$box, 8 *$box);
+  function screenWrite(text, font, style, Xpos, Ypos) {
+    $ctx.font = font; 
+    $ctx.fillStyle = style;
+    $ctx.fillText(text, Xpos, Ypos);
+  }
+
+  screenWrite("The", "78px serif", "#228B22",6 *$box, 8 *$box)
   $ctx.fillText("Snake's Game", 1 *$box, 11 *$box);
-  
-  $ctx.font = "23px serif";
-  $ctx.fillStyle = "#FDFD00";
-  $ctx.fillText("Start the game pressing SPACE", 4 *$box, 15 *$box);
+  screenWrite("Start the game pressing SPACE", "23px serif", "#FDFD00",4 *$box, 15 *$box);
   /* < -------------- | -------------- > */
 
   const $vel = 1;
@@ -23,7 +36,7 @@ window.onload = function() {
   let $HeadPY;
   let $direction;
   let $snakeEatApple = false;
-  let $pointCount = 0;
+  let $pointCount = 1;
   let applePos = {
     randomPX: "",
     randomPY: ""
@@ -35,19 +48,15 @@ window.onload = function() {
   // funcão que inicia o game
   function gameStart(e) {
     if(e.keyCode === 32 && jogoAtivo === false) {
-      
       $ctx.clearRect(0, 0, $fullArea, $fullArea);
-
       $HeadPX = 9;
       $HeadPY = 9;
       $direction = "DOWN";
-
       $snake = [
         {px: 9, py: 9}, 
         {px: 9, py: 8}, 
         {px: 9, py: 7}, 
       ]
-
       drawApple();
       gameRun = setInterval(gameRunning, 150);
       jogoAtivo = true;
@@ -58,31 +67,23 @@ window.onload = function() {
   // função que finaliza o game;
    function gameStop() {
     clearInterval(gameRun);
-
     $ctx.clearRect(0, 0, $fullArea, $fullArea);
-
     setTimeout(()=> {
-      $ctx.fillStyle = "#FF0000";
-      $ctx.font = "70px serif";
-      $ctx.fillText( "Game Over", 3 *$box, 10 *$box);
-      
-      $ctx.fillStyle = "#FDFD00";
-      $ctx.font = "23px serif";
-      $ctx.fillText( "Press SPACE for restart", 5 *$box, 12 *$box);
+      screenWrite("Game Over","70px serif","#FF0000", 3 *$box, 10 *$box)
+      screenWrite("Press SPACE for restart","23px serif","#FDFD00",5 *$box, 12 *$box);
     }, 300);
-
     jogoAtivo = false;
     $pointCount = 0;
     showScore();
   } 
+
   // função responsavel por atualizar o jogo em tempo real:
   function gameRunning() {
     updateDirection();
     let px = $snake[0].px;
     let py = $snake[0].py;
-    
+    showScore(px, py); 
     drawSnake();
-
     if( px !== $HeadPX || py !== $HeadPY ) {
       let result = $snake.some((item)=> item.px === $HeadPX && item.py === $HeadPY);
       if(result) return gameStop();
@@ -94,18 +95,15 @@ window.onload = function() {
     }
     $snakeEatApple = false;
   }
-  /* < -------------- | -------------- > */
 
   // pinta o quadrado na posição especificada: 
   function drawBox(px, py) {
     return $ctx.fillRect( px * $box, py * $box, $box, $box);
-  }
-
+  };
   // limpa o quadrado na posição especificada:
   function clearBox(px, py) {
     return $ctx.clearRect(px *$box , py *$box , $box, $box);
-  }
-
+  };
   // Função que desenha a cobra: 
    function drawSnake() {
     $snake.map((item)=> {
@@ -129,8 +127,7 @@ window.onload = function() {
         updateApplePos(item.px, item.py);
         return drawBox( item.px, item.py);
     });
-
-   }
+   };
 
 
    // desenha a maçã:
@@ -140,30 +137,27 @@ window.onload = function() {
     let randomPY = Math.round(Math.random() * ($qtdBox -1));
     applePos.randomPX = randomPX;
     applePos.randomPY = randomPY;
+    console.log(applePos.randomPX, applePos.randomPY);
     return drawBox(randomPX, randomPY);
   } 
-
   // atualiza posição da maçã:
   function updateApplePos(px , py) {
     if(px === applePos.randomPX && py === applePos.randomPY ) {
       drawApple();
       $pointCount += 1;
-      showScore();
       $ctx.fillStyle = "#BBB";
       $ctx.fillRect(px *$box, py *$box, $box, $box);
       return $snakeEatApple = true;
     } 
   }
-
   // exibe a quantidade de pontos(maçãs que o usuario comeu) na tela.
-  function showScore() {
+  function showScore(px, py) {
     const score = document.querySelector("#score");
-    let text = `SCORE: ${$pointCount}`;
-
-    score.innerText = text;
+    if(px === applePos.randomPX && py === applePos.randomPY ) {
+      let text = `SCORE: ${$pointCount}`;
+      score.innerText = text;
+    }
   }
-
-/* < -------------- | -------------- > */
 
   // atualiza a direção da cobra:
   function updateDirection() {
