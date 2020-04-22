@@ -2,13 +2,11 @@ ul, li {
   list-style: none;
   margin: 0;
 }
-
 .main {
   width: 100vw;
   height: 100vh;
   background-color: rgb(30, 182, 88);
 }
-
 .container {
   width: 600px;
   height: 100vh;
@@ -19,33 +17,29 @@ ul, li {
   justify-content: center;
   align-items: center;
 }
-
 .score {
   color: #000;
   font-size: 25px;
   margin: 0 12px;
 }
-
 #stage {
   max-width: 500px;
   max-height: 500px;
   border: 25px solid rgb(19, 48, 180);
   background-color: #000;
 }
-
 .controllers {
   margin-top: 20px;
-  width: 180px;
+  width: 200px;
   min-height: 180px;
   padding: 0;
   position: relative;
 
   display: none !important;
 }
-
 .buttons {
-  width: 60px;
-  height: 60px;
+  width: 33.33%;
+  height: 33.33%;
   background-color: rgb(19, 48, 180);
   position: absolute;
 
@@ -53,25 +47,31 @@ ul, li {
   font-weight: bolder;
   text-align: center;
   line-height: 60px;
+  border-radius: 10%;
 }
-
 #left {
-  top: 60px;
+  top: 33.33%;
   left: 0px;  
 }
-
 #up {
   top: 0;
-  right: 60px;
-  
+  right: 33.33%;
 }
 #right {
-  top: 60px;
+  top: 33.33%;
   right: 0;
 }
 #down {
   bottom: 0;
-  left: 60px;
+  left: 33.33%;
+}
+#game-start {
+  top: 33.33%;
+  left: 33.33%;
+
+  background-color: #000;
+  font-size: 28px;
+  color: #FFF;
 }
 
 @media (max-width: 800px) {
@@ -80,7 +80,6 @@ ul, li {
     justify-content: flex-start;
     height: 70vh;
   }
-
   .controllers {
     display: block !important;
   }

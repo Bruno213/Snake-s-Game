@@ -1,22 +1,19 @@
 window.onload = function() {
   const Canvas = document.querySelector("#stage");
   const $ctx = Canvas.getContext("2d");
-
   const {width} = screen;
-
-  window.alert(screen.width, screen.hight);
-
-  if(width > 700) {
+  
+  if(width > 900) {
     Canvas.setAttribute("width", "500");
     Canvas.setAttribute("height", "500");
-  } else if (width <= 700 && width >= 500) {
+  } else if (width <= 900 && width >= 700) {
     Canvas.setAttribute("width", "400");
     Canvas.setAttribute("height", "400");
   } else {
     Canvas.setAttribute("width", "300");
-    Canvas.setAttribute("height", "300");
+    Canvas.setAttribute("height", "300"); 
   }
-  
+
   const $qtdBox = 20;
   const $box = Canvas.width / $qtdBox;
   const $fullArea = $box * $qtdBox;
@@ -27,9 +24,10 @@ window.onload = function() {
     $ctx.fillText(text, Xpos, Ypos);
   }
 
-  screenWrite("The", "78px serif", "#228B22",6 *$box, 8 *$box)
-  $ctx.fillText("Snake's Game", 1 *$box, 11 *$box);
-  screenWrite("Start the game pressing SPACE", "23px serif", "#FDFD00",4 *$box, 15 *$box);
+    screenWrite("The", "78px serif", "#228B22",6 *$box, 8 *$box);
+    $ctx.fillText("Snake's Game", 1 *$box, 11 *$box);
+    screenWrite("Start the game pressing SPACE", "23px serif", "#FDFD00",4 *$box, 15 *$box);
+
   /* < -------------- | -------------- > */
 
   const $vel = 1;
@@ -49,7 +47,9 @@ window.onload = function() {
 
   // funcão que inicia o game
   function gameStart(e) {
-    if(e.keyCode === 32 && jogoAtivo === false) {
+    let id = String(e.target.id) || null;
+
+    if((e.keyCode === 32 || id === "game-start") && jogoAtivo === false) {
       $ctx.clearRect(0, 0, $fullArea, $fullArea);
       $HeadPX = 9;
       $HeadPY = 9;
@@ -65,6 +65,7 @@ window.onload = function() {
     }
   }
   document.addEventListener("keyup", gameStart);
+  document.querySelector("#game-start").addEventListener('click', gameStart);
 
   // função que finaliza o game;
    function gameStop() {
@@ -180,11 +181,16 @@ window.onload = function() {
   }
   // altera a direção de acordo com o clique do usuário:
   function newDirection(e) {
+    let id = String(e.target.id) || false;
+
     let $newKey = e.keyCode;
-    if($newKey === 37 && $HeadPX - $vel !== $snake[1].px ) $direction = "LEFT"; 
-    if($newKey === 38 && $HeadPY - $vel !== $snake[1].py ) $direction = "UP";
-    if($newKey === 39 && $HeadPX + $vel !== $snake[1].px ) $direction = "RIGHT";
-    if($newKey === 40 && $HeadPY + $vel !== $snake[1].py ) $direction = "DOWN";
+    if(($newKey === 37 || id === "left")  && $HeadPX - $vel !== $snake[1].px ) $direction = "LEFT"; 
+    if(($newKey === 38 || id === "up") && $HeadPY - $vel !== $snake[1].py ) $direction = "UP";
+    if(($newKey === 39 || id === "right") && $HeadPX + $vel !== $snake[1].px ) $direction = "RIGHT";
+    if(($newKey === 40 || id === "down") && $HeadPY + $vel !== $snake[1].py ) $direction = "DOWN";
   }
    document.addEventListener("keydown", newDirection); 
+
+   const controllers = document.querySelectorAll(".buttons");
+    controllers.forEach(item => item.addEventListener("click", newDirection));
 }
