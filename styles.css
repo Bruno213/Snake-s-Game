@@ -82,7 +82,11 @@ ul, li {
   }
 
   #stage {
+<<<<<<< HEAD
     border: 5px solid rgb(19, 48, 180);
+=======
+    border-width: 5px;
+>>>>>>> 61a12fb973dffb760aa77bbc77397b128e5d1bde
   }
 
   .controllers {
