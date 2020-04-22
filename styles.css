@@ -23,8 +23,11 @@
 }
 
 #stage {
+  max-width: 500px;
+  max-height: 500px;
   border: 25px solid rgb(19, 48, 180);
   background-color: #000;
+<<<<<<< HEAD
 }
 
 @media (max-width: 600px) {
@@ -33,4 +36,6 @@
     justify-content: flex-start;
     height: 70vh;
   }
+=======
+>>>>>>> 57ef51ef5c57dafeef04751f5a7acbaf36ebcbde
 }
