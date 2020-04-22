@@ -1,8 +1,12 @@
+ul, li {
+  list-style: none;
+  margin: 0;
+}
 
 .main {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(23, 160, 57);
+  background-color: rgb(30, 182, 88);
 }
 
 .container {
@@ -27,15 +31,57 @@
   max-height: 500px;
   border: 25px solid rgb(19, 48, 180);
   background-color: #000;
-<<<<<<< HEAD
 }
 
-@media (max-width: 600px) {
+.controllers {
+  margin-top: 20px;
+  width: 180px;
+  min-height: 180px;
+  padding: 0;
+  position: relative;
+
+  display: none !important;
+}
+
+.buttons {
+  width: 60px;
+  height: 60px;
+  background-color: rgb(19, 48, 180);
+  position: absolute;
+
+  font-size: 30px;
+  font-weight: bolder;
+  text-align: center;
+  line-height: 60px;
+}
+
+#left {
+  top: 60px;
+  left: 0px;  
+}
+
+#up {
+  top: 0;
+  right: 60px;
+  
+}
+#right {
+  top: 60px;
+  right: 0;
+}
+#down {
+  bottom: 0;
+  left: 60px;
+}
+
+@media (max-width: 800px) {
   .container {
     width: 100%;
     justify-content: flex-start;
     height: 70vh;
   }
-=======
->>>>>>> 57ef51ef5c57dafeef04751f5a7acbaf36ebcbde
+
+  .controllers {
+    display: block !important;
+  }
 }
