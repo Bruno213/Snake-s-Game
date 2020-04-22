@@ -4,6 +4,8 @@ window.onload = function() {
 
   const {width} = screen;
 
+  window.alert(screen.width, screen.hight);
+
   if(width > 700) {
     Canvas.setAttribute("width", "500");
     Canvas.setAttribute("height", "500");
