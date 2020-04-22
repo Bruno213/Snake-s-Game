@@ -30,8 +30,8 @@ ul, li {
 }
 .controllers {
   margin-top: 20px;
-  width: 200px;
-  min-height: 180px;
+  width: 220px;
+  min-height: 200px;
   padding: 0;
   position: relative;
 
@@ -80,6 +80,11 @@ ul, li {
     justify-content: flex-start;
     height: 70vh;
   }
+
+  #stage {
+    border-width: 5px;
+  }
+
   .controllers {
     display: block !important;
   }
